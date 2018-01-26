@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<plugin id="com.outsystems.plugins.epassportreader" version="0.1" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+    <name>ePassportReaderPlugin</name>
+    <js-module name="ePassportReaderPlugin" src="www/ePassportReaderPlugin.js">
+        <clobbers target="cordova.plugins.ePassportReaderPlugin" />
+    </js-module>
+    <platform name="android">
+        <config-file parent="/*" target="res/xml/config.xml">
+            <feature name="PassportReaderPlugin">
+                <param name="android-package" value="com.outsystems.plugins.epassportreader.PassportReaderPlugin" />
+                <param name="onload" value="true" />
+            </feature>
+        </config-file>
+
+        <config-file parent="/*" target="AndroidManifest.xml">
+            <uses-permission android:name="android.permission.NFC" />
+            <uses-feature android:name="android.hardware.nfc" android:required="false" />
+        </config-file>
+
+        <!-- <config-file parent="/manifest/application/activity" target="AndroidManifest.xml"> -->
+            <!-- NFC-related intent filter. Allows application to handle messages from any
+                 NFC-A devices discovered. Other Android devices are required to support NFC-A.
+                 See: res/xml/nfc_tech_filter.xml -->
+            <!-- <intent-filter>
+                <action android:name="android.nfc.action.TECH_DISCOVERED" />
+            </intent-filter>
+            <meta-data
+                android:name="android.nfc.action.TECH_DISCOVERED"
+                android:resource="@xml/nfc_tech_filter" />
+        </config-file> -->
+
+        <framework src="src/android/epassportreader.gradle" custom="true" type="gradleReference" />
+
+        <resource-file src="src/android/res/nfc_tech_filter.xml" target="res/xml/nfc_tech_filter.xml" />
+        
+        <source-file src="src/android/PassportReaderPlugin.java" target-dir="src/com/outsystems/plugins/epassportreader" />
+        <source-file src="src/android/NfcPassportReaderCallback.java" target-dir="src/com/outsystems/plugins/epassportreader" />
+        <source-file src="src/android/Passport.java" target-dir="src/com/outsystems/plugins/epassportreader" />
+        
+    </platform>
+</plugin>
