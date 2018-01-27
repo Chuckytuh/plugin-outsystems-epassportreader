@@ -23,7 +23,7 @@ public class PassportReaderPlugin extends CordovaPlugin implements NfcPassportRe
     private static int READER_FLAGS = NfcAdapter.FLAG_READER_SKIP_NDEF_CHECK | NfcAdapter.FLAG_READER_NFC_A;
     private NfcPassportReaderCallback nfcPassportReaderCallback;
     private CallbackContext callbackContext;
-    
+
     private String documentNumber;
     private String dateOfBirth;
     private String dateOfExpiry;
@@ -97,6 +97,10 @@ public class PassportReaderPlugin extends CordovaPlugin implements NfcPassportRe
             enableReader(args, callbackContext);
         } else if (action.equals("disableReader")) {
             disableReader(callbackContext);
+        } else if (action.equals("checkNfcSupport")) {
+            checkNfcSupport(callbackContext);
+        } else if (action.equals("isNfcEnabled")) {
+            isNfcEnabled(callbackContext);
         }
         return false;
     }
@@ -133,6 +137,19 @@ public class PassportReaderPlugin extends CordovaPlugin implements NfcPassportRe
         callbackContext.success();
     }
 
+    private void checkNfcSupport(final CallbackContext callbackContext) {
+        NfcAdapter nfcAdapter = NfcAdapter.getDefaultAdapter(cordova.getActivity());
+        PluginResult pr = new PluginResult(PluginResult.Status.OK, nfcAdapter != null);
+        callbackContext.sendPluginResult(pr);
+    }
+
+    private void isNfcEnabled(CallbackContext callbackContext) {
+        NfcAdapter nfcAdapter = NfcAdapter.getDefaultAdapter(cordova.getActivity());
+        PluginResult pr = new PluginResult(PluginResult.Status.OK, nfcAdapter != null && nfcAdapter.isEnabled());
+        callbackContext.sendPluginResult(pr);
+    }
+
+
     @Override
     public void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
@@ -152,7 +169,7 @@ public class PassportReaderPlugin extends CordovaPlugin implements NfcPassportRe
 
 
     // Example:
-    //    dateOfBirth: "yyMMyy"
+    //    dateOfBirth: "yyMMdd"
     //    dateOfExpiry: "yyMMdd"
     //    documentCode: "P"
     //    documentNumber: "XXXXXXX"
@@ -192,7 +209,5 @@ public class PassportReaderPlugin extends CordovaPlugin implements NfcPassportRe
             pr.setKeepCallback(true);
             ctx.sendPluginResult(pr);
         }
-
     }
-
 }
