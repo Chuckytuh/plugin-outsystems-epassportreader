@@ -55,6 +55,7 @@ public class NfcPassportReaderCallback implements NfcAdapter.ReaderCallback {
 
         try {
             IsoDep nfc = IsoDep.get(tag);
+            nfc.setTimeout(10000);
             CardService cs = CardService.getInstance(nfc);
             ps = new PassportService(cs, PassportService.NORMAL_MAX_TRANCEIVE_LENGTH,
                     PassportService.DEFAULT_MAX_BLOCKSIZE, false);
