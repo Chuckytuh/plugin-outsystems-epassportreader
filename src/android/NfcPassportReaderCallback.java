@@ -33,9 +33,9 @@ import java.util.List;
 @TargetApi(Build.VERSION_CODES.KITKAT)
 public class NfcPassportReaderCallback implements NfcAdapter.ReaderCallback {
 
-    static {
-        Security.insertProviderAt(new org.spongycastle.jce.provider.BouncyCastleProvider(), 1);
-    }
+    // static {
+    //     Security.insertProviderAt(new org.spongycastle.jce.provider.BouncyCastleProvider(), 1);
+    // }
 
     private PassportReaderPlugin callback;
     private BACKeyProvider bacKeyProvider;
