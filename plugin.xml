@@ -33,9 +33,13 @@
 
         <resource-file src="src/android/res/nfc_tech_filter.xml" target="res/xml/nfc_tech_filter.xml" />
         
-        <source-file src="src/android/PassportReaderPlugin.java" target-dir="src/com/outsystems/plugins/epassportreader" />
         <source-file src="src/android/NfcPassportReaderCallback.java" target-dir="src/com/outsystems/plugins/epassportreader" />
         <source-file src="src/android/Passport.java" target-dir="src/com/outsystems/plugins/epassportreader" />
+        <source-file src="src/android/PassportAdditionalPersonalDetails.java" target-dir="src/com/outsystems/plugins/epassportreader" />
+        <source-file src="src/android/PassportReaderPlugin.java" target-dir="src/com/outsystems/plugins/epassportreader" />
+        <source-file src="src/android/PassportReaderTask.java" target-dir="src/com/outsystems/plugins/epassportreader" />
+        
+        <source-file src="src/android/exceptions/BACInvalidData.java" target-dir="src/com/outsystems/plugins/epassportreader/exceptions" />
         
     </platform>
 </plugin>

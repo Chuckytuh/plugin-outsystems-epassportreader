@@ -5,6 +5,8 @@ package com.outsystems.plugins.epassportreader;
 
 import net.sf.scuba.data.Gender;
 
+import org.jmrtd.lds.icao.MRZInfo;
+
 public class Passport {
 
     private String documentCode;
@@ -18,8 +20,10 @@ public class Passport {
     private String dateOfExpiry;
     private String optionalData1; /* NOTE: holds personal number for some issuing states (e.g. NL), but is used to hold (part of) document number for others. */
     private String optionalData2;
+    private PassportAdditionalPersonalDetails additionalPersonalDetails;
 
-    public Passport(String documentCode, String issuingState, String primaryIdentifier, String secondaryIdentifier, String nationality, String documentNumber, String dateOfBirth, Gender gender, String dateOfExpiry, String optionalData1, String optionalData2) {
+
+    public Passport(String documentCode, String issuingState, String primaryIdentifier, String secondaryIdentifier, String nationality, String documentNumber, String dateOfBirth, Gender gender, String dateOfExpiry, String optionalData1, String optionalData2, PassportAdditionalPersonalDetails additionalPersonalDetails) {
         this.documentCode = documentCode;
         this.issuingState = issuingState;
         this.primaryIdentifier = primaryIdentifier;
@@ -31,6 +35,7 @@ public class Passport {
         this.dateOfExpiry = dateOfExpiry;
         this.optionalData1 = optionalData1;
         this.optionalData2 = optionalData2;
+        this.additionalPersonalDetails = additionalPersonalDetails;
     }
 
     public String getDocumentCode() {
@@ -77,6 +82,10 @@ public class Passport {
         return optionalData2;
     }
 
+    public PassportAdditionalPersonalDetails getAdditionalPersonalDetails() {
+        return additionalPersonalDetails;
+    }
+
     public static class Builder {
         private String documentCode;
         private String issuingState;
@@ -89,6 +98,8 @@ public class Passport {
         private String dateOfExpiry;
         private String optionalData1;
         private String optionalData2;
+        private PassportAdditionalPersonalDetails additionalPersonalDetails;
+
 
         public Builder setDocumentCode(String documentCode) {
             this.documentCode = documentCode;
@@ -146,9 +157,17 @@ public class Passport {
             return this;
         }
 
+        public Builder setPassportAdditionalPersonalDetails(PassportAdditionalPersonalDetails additionalPersonalDetails) {
+            this.additionalPersonalDetails = additionalPersonalDetails;
+            return this;
+        }
+
+
         public Passport build() {
-            return new Passport(documentCode, issuingState, primaryIdentifier, secondaryIdentifier, nationality, documentNumber, dateOfBirth, gender, dateOfExpiry, optionalData1, optionalData2);
+            return new Passport(documentCode, issuingState, primaryIdentifier, secondaryIdentifier, nationality, documentNumber, dateOfBirth, gender, dateOfExpiry, optionalData1, optionalData2, additionalPersonalDetails);
         }
     }
+
+
 
 }

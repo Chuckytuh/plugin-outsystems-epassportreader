@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.nfc.NfcAdapter;
 
+import com.outsystems.plugins.epassportreader.exceptions.BACInvalidData;
+
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.PluginResult;
@@ -30,11 +32,11 @@ public class PassportReaderPlugin extends CordovaPlugin implements NfcPassportRe
 
     private NfcPassportReaderCallback.BACKeyProvider bacKeyProvider = new NfcPassportReaderCallback.BACKeyProvider() {
         @Override
-        public BACKey getBACKey() {
+        public BACKey getBACKey() throws BACInvalidData {
             try {
                 return new BACKey(documentNumber, dateOfBirth, dateOfExpiry);
             } catch (IllegalArgumentException e) {
-                return null;
+                throw new BACInvalidData();
             }
         }
     };
@@ -95,12 +97,16 @@ public class PassportReaderPlugin extends CordovaPlugin implements NfcPassportRe
             return true;
         } else if (action.equals("enableReader")) {
             enableReader(args, callbackContext);
+            return true;
         } else if (action.equals("disableReader")) {
             disableReader(callbackContext);
+            return true;
         } else if (action.equals("checkNfcSupport")) {
             checkNfcSupport(callbackContext);
+            return true;
         } else if (action.equals("isNfcEnabled")) {
             isNfcEnabled(callbackContext);
+            return true;
         }
         return false;
     }
@@ -113,6 +119,12 @@ public class PassportReaderPlugin extends CordovaPlugin implements NfcPassportRe
     }
 
     private void enableReader(final JSONArray args, final CallbackContext callbackContext) {
+        if (NfcAdapter.getDefaultAdapter(cordova.getActivity()) == null) {
+            callbackContext.error("NFC unavailable");
+            return;
+        }
+
+
         if (args.length() < 3) {
             callbackContext.error("Invalid arguments");
         }
@@ -167,6 +179,13 @@ public class PassportReaderPlugin extends CordovaPlugin implements NfcPassportRe
         callbackContext.sendPluginResult(pr);
     }
 
+    @Override
+    public void onError(String errorMessage) {
+        PluginResult pr = new PluginResult(PluginResult.Status.ERROR, errorMessage);
+        pr.setKeepCallback(true);
+        callbackContext.sendPluginResult(pr);
+    }
+
 
     // Example:
     //    dateOfBirth: "yyMMdd"
@@ -179,6 +198,20 @@ public class PassportReaderPlugin extends CordovaPlugin implements NfcPassportRe
     //    optionalData1: "XXXXXXXX<<<<<<X"
     //    primaryIdentifier: "Doe"
     //    secondaryIdentifier: "John<Dalton<<<<<<<<<<"
+
+    //    String nameOfHolder;
+    //    List<String> otherNames;
+    //    String personalNumber;
+    //    String fullDateOfBirth;
+    //    List<String> placeOfBirth;
+    //    List<String> permanentAddress;
+    //    String telephone;
+    //    String profession;
+    //    String title;
+    //    String personalSummary;
+    //    byte[] proofOfCitizenship;
+    //    List<String> otherValidTDNumbers;
+    //    String custodyInformation;
 
     private void dispatchPassportRead(CallbackContext ctx, Passport passport) {
         if (ctx == null) {
@@ -197,6 +230,20 @@ public class PassportReaderPlugin extends CordovaPlugin implements NfcPassportRe
             jsonObject.put("dateOfExpiry", passport.getDateOfExpiry());
             jsonObject.put("optionalData1", passport.getOptionalData1());
             jsonObject.put("optionalData2", passport.getOptionalData2());
+
+            PassportAdditionalPersonalDetails details = passport.getAdditionalPersonalDetails();
+            if (details != null) {
+                JSONObject detailsJSON = new JSONObject();
+                detailsJSON.put("nameOfHolder", details.getNameOfHolder());
+                detailsJSON.put("personalNumber", details.getPersonalNumber());
+                detailsJSON.put("fullDateOfBirth", details.getFullDateOfBirth());
+                detailsJSON.put("telephone", details.getTelephone());
+                detailsJSON.put("profession", details.getProfession());
+                detailsJSON.put("title", details.getTitle());
+
+                jsonObject.put("additionalPersonalDetails", detailsJSON);
+            }
+
 
             PluginResult pr = new PluginResult(PluginResult.Status.OK, jsonObject);
             pr.setKeepCallback(true);
