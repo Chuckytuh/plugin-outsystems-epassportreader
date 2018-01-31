@@ -14,6 +14,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Collections;
+
 
 /**
  * @author João Gonçalves on 23/01/2018
@@ -240,7 +242,14 @@ public class PassportReaderPlugin extends CordovaPlugin implements NfcPassportRe
                 detailsJSON.put("telephone", details.getTelephone());
                 detailsJSON.put("profession", details.getProfession());
                 detailsJSON.put("title", details.getTitle());
+                JSONArray addresses = new JSONArray();
+                if (details.getPermanentAddress() != null) {
+                    for (String address : details.getPermanentAddress()) {
+                        addresses.put(address);
+                    }
 
+                }
+                detailsJSON.put("permanentAddress", addresses);
                 jsonObject.put("additionalPersonalDetails", detailsJSON);
             }
 

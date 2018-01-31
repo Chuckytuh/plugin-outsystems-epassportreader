@@ -111,64 +111,7 @@ public class PassportAdditionalPersonalDetails {
         return new Builder();
     }
 
-
-    interface IBuild {
-        PassportAdditionalPersonalDetails build();
-    }
-
-    interface ICustodyInformation {
-        IBuild withCustodyInformation(String val);
-    }
-
-    interface IOtherValidTDNumbers {
-        ICustodyInformation withOtherValidTDNumbers(List<String> val);
-    }
-
-    interface IProofOfCitizenship {
-        IOtherValidTDNumbers withProofOfCitizenship(byte[] val);
-    }
-
-    interface IPersonalSummary {
-        IProofOfCitizenship withPersonalSummary(String val);
-    }
-
-    interface ITitle {
-        IPersonalSummary withTitle(String val);
-    }
-
-    interface IProfession {
-        ITitle withProfession(String val);
-    }
-
-    interface ITelephone {
-        IProfession withTelephone(String val);
-    }
-
-    interface IPermanentAddress {
-        ITelephone withPermanentAddress(List<String> val);
-    }
-
-    interface IPlaceOfBirth {
-        IPermanentAddress withPlaceOfBirth(List<String> val);
-    }
-
-    interface IFullDateOfBirth {
-        IPlaceOfBirth withFullDateOfBirth(String val);
-    }
-
-    interface IPersonalNumber {
-        IFullDateOfBirth withPersonalNumber(String val);
-    }
-
-    interface IOtherNames {
-        IPersonalNumber withOtherNames(List<String> val);
-    }
-
-    interface INameOfHolder {
-        IOtherNames withNameOfHolder(String val);
-    }
-
-    public static final class Builder implements ICustodyInformation, IOtherValidTDNumbers, IProofOfCitizenship, IPersonalSummary, ITitle, IProfession, ITelephone, IPermanentAddress, IPlaceOfBirth, IFullDateOfBirth, IPersonalNumber, IOtherNames, INameOfHolder, IBuild {
+    public static final class Builder {
         private String custodyInformation;
         private List<String> otherValidTDNumbers;
         private byte[] proofOfCitizenship;
@@ -186,80 +129,67 @@ public class PassportAdditionalPersonalDetails {
         private Builder() {
         }
 
-        @Override
-        public IBuild withCustodyInformation(String val) {
+        public Builder withCustodyInformation(String val) {
             custodyInformation = val;
             return this;
         }
 
-        @Override
-        public ICustodyInformation withOtherValidTDNumbers(List<String> val) {
+        public Builder withOtherValidTDNumbers(List<String> val) {
             otherValidTDNumbers = val;
             return this;
         }
 
-        @Override
-        public IOtherValidTDNumbers withProofOfCitizenship(byte[] val) {
+        public Builder withProofOfCitizenship(byte[] val) {
             proofOfCitizenship = val;
             return this;
         }
 
-        @Override
-        public IProofOfCitizenship withPersonalSummary(String val) {
+        public Builder withPersonalSummary(String val) {
             personalSummary = val;
             return this;
         }
 
-        @Override
-        public IPersonalSummary withTitle(String val) {
+        public Builder withTitle(String val) {
             title = val;
             return this;
         }
 
-        @Override
-        public ITitle withProfession(String val) {
+        public Builder withProfession(String val) {
             profession = val;
             return this;
         }
 
-        @Override
-        public IProfession withTelephone(String val) {
+        public Builder withTelephone(String val) {
             telephone = val;
             return this;
         }
 
-        @Override
-        public ITelephone withPermanentAddress(List<String> val) {
+        public Builder withPermanentAddress(List<String> val) {
             permanentAddress = val;
             return this;
         }
 
-        @Override
-        public IPermanentAddress withPlaceOfBirth(List<String> val) {
+        public Builder withPlaceOfBirth(List<String> val) {
             placeOfBirth = val;
             return this;
         }
 
-        @Override
-        public IPlaceOfBirth withFullDateOfBirth(String val) {
+        public Builder withFullDateOfBirth(String val) {
             fullDateOfBirth = val;
             return this;
         }
 
-        @Override
-        public IFullDateOfBirth withPersonalNumber(String val) {
+        public Builder withPersonalNumber(String val) {
             personalNumber = val;
             return this;
         }
 
-        @Override
-        public IPersonalNumber withOtherNames(List<String> val) {
+        public Builder withOtherNames(List<String> val) {
             otherNames = val;
             return this;
         }
 
-        @Override
-        public IOtherNames withNameOfHolder(String val) {
+        public Builder withNameOfHolder(String val) {
             nameOfHolder = val;
             return this;
         }
